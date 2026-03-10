@@ -1,0 +1,31 @@
+.dive-log-container {
+  margin: 20px;
+  font-family: sans-serif;
+}
+
+.dive-log-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dive-log-table th,
+.dive-log-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.dive-log-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: white;
+}
+
+.dive-log-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.dive-log-table tbody tr:hover {
+  background-color: #ddd;
+}
