@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 
@@ -29,7 +29,7 @@ export const divesSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchDives.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = 'succeeded';
         state.dives = action.payload;
       })
       .addCase(fetchDives.rejected, (state) => {
