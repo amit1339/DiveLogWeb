@@ -67,6 +67,7 @@ const DivesList = () => {
   const dispatch = useAppDispatch();
   const dives = useAppSelector(selectDives);
   const status = useAppSelector(selectDivesStatus);
+  const { user } = useAppSelector((state) => state.auth);
   const [selectedDive, setSelectedDive] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -95,10 +96,10 @@ const DivesList = () => {
   };
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchDives());
+    if (status === 'idle' && user) {
+      dispatch(fetchDives(user.uid));
     }
-  }, [status, dispatch]);
+  }, [status, dispatch, user]);
 
   // Filtered + sorted dives
   const filteredDives = useMemo(() => {

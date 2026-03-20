@@ -1,17 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase';
-
-
-
 
 const initialState = {
   dives: [],
   status: 'idle',
 };
 
-export const fetchDives = createAsyncThunk('dives/fetchDives', async () => {
-  const querySnapshot = await getDocs(collection(db, 'dives'));
+export const fetchDives = createAsyncThunk('dives/fetchDives', async (userId) => {
+  if (!userId) return [];
+  const q = query(collection(db, 'dives'), where('userId', '==', userId));
+  const querySnapshot = await getDocs(q);
   const dives = [];
   querySnapshot.forEach((doc) => {
     dives.push({ id: doc.id, ...doc.data() });
@@ -22,7 +21,12 @@ export const fetchDives = createAsyncThunk('dives/fetchDives', async () => {
 export const divesSlice = createSlice({
   name: 'dives',
   initialState,
-  reducers: {},
+  reducers: {
+    clearDives(state) {
+      state.dives = [];
+      state.status = 'idle';
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDives.pending, (state) => {
@@ -38,6 +42,7 @@ export const divesSlice = createSlice({
   },
 });
 
+export const { clearDives } = divesSlice.actions;
 export const selectDives = (state) => state.dives.dives;
 export const selectDivesStatus = (state) => state.dives.status;
 
