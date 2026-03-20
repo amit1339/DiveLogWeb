@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/DiveLogWeb/static/css/main.5d4c39f6.css",
+    "main.js": "/DiveLogWeb/static/js/main.f23ed170.js",
+    "index.html": "/DiveLogWeb/index.html",
+    "main.5d4c39f6.css.map": "/DiveLogWeb/static/css/main.5d4c39f6.css.map",
+    "main.f23ed170.js.map": "/DiveLogWeb/static/js/main.f23ed170.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5d4c39f6.css",
+    "static/js/main.f23ed170.js"
+  ]
+}
