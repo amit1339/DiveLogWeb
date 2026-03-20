@@ -4,18 +4,27 @@ import { fetchDives, selectDives, selectDivesStatus } from '../slice/divesSlice'
 import './DivesList.css';
 import DiveModal from './DiveModal';
 
-const formatDate = (dateStr) => {
+const parseDate = (val) => {
+  if (!val) return new Date(NaN);
+  if (val.seconds !== undefined) return new Date(val.seconds * 1000);
+  if (typeof val.toDate === 'function') return val.toDate();
+  return new Date(val);
+};
+
+const formatDate = (dateVal) => {
   try {
-    const d = new Date(dateStr);
+    const d = parseDate(dateVal);
+    if (isNaN(d.getTime())) return 'Invalid Date';
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   } catch {
-    return dateStr;
+    return String(dateVal);
   }
 };
 
-const formatTime = (dateStr) => {
+const formatTime = (dateVal) => {
   try {
-    const d = new Date(dateStr);
+    const d = parseDate(dateVal);
+    if (isNaN(d.getTime())) return '';
     return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   } catch {
     return '';
@@ -29,9 +38,11 @@ const formatDuration = (seconds) => {
   return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 };
 
-const toDateStr = (dateStr) => {
+const toDateStr = (dateVal) => {
   try {
-    return new Date(dateStr).toISOString().slice(0, 10);
+    const d = parseDate(dateVal);
+    if (isNaN(d.getTime())) return '';
+    return d.toISOString().slice(0, 10);
   } catch {
     return '';
   }

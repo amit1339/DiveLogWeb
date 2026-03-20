@@ -2,17 +2,31 @@ import React, { useMemo, useEffect, useState, useRef, useCallback } from 'react'
 import './DiveModal.css';
 
 /* ---- Helpers ---- */
-const formatDate = (dateStr) => {
-  try {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-  } catch { return dateStr; }
+const parseDate = (val) => {
+  if (!val) return new Date(NaN);
+  if (val.seconds !== undefined) return new Date(val.seconds * 1000);
+  if (typeof val.toDate === 'function') return val.toDate();
+  return new Date(val);
 };
 
-const formatTime = (dateStr) => {
+const formatDate = (dateVal) => {
   try {
-    return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  } catch { return ''; }
+    const d = parseDate(dateVal);
+    if (isNaN(d.getTime())) return 'Invalid Date';
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  } catch {
+    return String(dateVal);
+  }
+};
+
+const formatTime = (dateVal) => {
+  try {
+    const d = parseDate(dateVal);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return '';
+  }
 };
 
 const formatDuration = (seconds) => {
